@@ -22,7 +22,7 @@ export function createValidator<Prefs extends Record<string, unknown>>(
   };
 }
 
-export function either<T>(valid: T[]) {
+export function either<T>(valid: { 0: T } & T[]) {
   const validEntries = new Set<T>(valid);
   const initial = valid[0];
 

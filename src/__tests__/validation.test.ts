@@ -44,6 +44,49 @@ describe("Validation", () => {
       });
     });
 
+    it("supports nesting", () => {
+      type A = {
+        a: number;
+        b: string;
+      };
+
+      type B = {
+        c: number;
+        d: string;
+      };
+
+      const validateA = createValidator<A>({
+        a: number(1),
+        b: string("A"),
+      });
+
+      const validateB = createValidator<B>({
+        c: number(2),
+        d: string("B"),
+      });
+
+      const validate = createValidator({
+        a: validateA,
+        b: validateB,
+      });
+
+      expect(
+        validate({
+          a: { a: 1000 },
+          b: { d: "Q" },
+        })
+      ).toEqual({
+        a: {
+          a: 1000,
+          b: "A",
+        },
+        b: {
+          c: 2,
+          d: "Q",
+        },
+      });
+    });
+
     describe("validation function", () => {
       it("ignores values not in spec", () => {
         const validate = createValidator({

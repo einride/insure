@@ -173,3 +173,43 @@ export function getDevicePreferences() {
   validate({language: "italian"}); // Returns {language: "english"}
   validate({language: false}); // Returns {language: "english"}
   ```
+
+
+### Custom validators
+
+The only contract for a validator function is that it takes an unknown type, and returns a known type. It should fulfill the [TypeScript Guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html#type-guards-and-differentiating-types) pattern.
+
+```ts
+type ValidationEntry<T> = (value: unknown) => T;
+```
+
+Basic example.
+```ts
+function min16Len(value: unknown): string {
+  if (typeof value === "string") {
+    if (value.length > 15) {
+      return value;
+    }
+  }
+  return undefined;
+}
+```
+
+Validators that require a state can be created using a higher-order function. This is useful when a default should be provided or its implementation characteristics should be configurable.
+
+```ts
+function minLen(min: number) {
+  function validate(value: unknown): string {
+    if (typeof value === "string") {
+      if (value.length > min) {
+        return value;
+      }
+    }
+    return undefined;
+  }
+}
+
+const validator = createValidator({
+  defaultId: minLen(16),
+});
+```

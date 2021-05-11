@@ -38,7 +38,7 @@ export function either<T>(valid: { 0: T } & T[]) {
 export function string<T extends string | undefined>(initial: T) {
   return function validate(value: unknown) {
     if (typeof value === "string") {
-      return value as T;
+      return value as string;
     }
 
     return initial;
@@ -48,7 +48,7 @@ export function string<T extends string | undefined>(initial: T) {
 export function number<T extends number | undefined>(initial: T) {
   return function validate(value: unknown) {
     if (typeof value === "number") {
-      return value as T;
+      return value as number;
     }
 
     return initial;

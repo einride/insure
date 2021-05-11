@@ -87,6 +87,14 @@ describe("Validation", () => {
       });
     });
 
+    it("is capable of type inference", () => {
+      createValidator({
+        a: number(1),
+        b: string("A"),
+        c: either([1, "a"]),
+      });
+    });
+
     describe("validation function", () => {
       it("ignores values not in spec", () => {
         const validate = createValidator({

@@ -122,3 +122,54 @@ export function getDevicePreferences() {
     return validate(prefs);
 }
 ```
+
+### Value types
+
+* Number
+  
+  The number validator will only let numbers pass thru. 
+  No type casting will be attempted.
+  Allows default to be `undefined`.
+  
+  ```ts
+  const validate = createValidator({
+    size: number(1),
+  });
+  
+  validate({size: "foo"}); // Returns {size: 1}
+  validate({size: "5"}); // Returns {size: 1}
+  validate({size: 20}); // Returns {size: 20}
+  ```
+
+* String
+  
+  The string validator will only let strings pass thru. 
+  No type casting will be attempted.
+  Allows default to be `undefined`.
+  
+  ```ts
+  const validate = createValidator({
+    defaultId: string(undefined),
+  });
+  
+  validate({defaultId: "v8aewbng39"}); // Returns {defaultId: "v8aewbng39"}
+  validate({defaultId: "5"}); // Returns {defaultId: "5"}
+  validate({defaultId: 1234}); // Returns {defaultId: undefined}
+  ```
+  
+* Either (one of)
+  
+  The either validator will only values that exist in a Set thru.
+  No type casting will be attempted.
+  Default value will be the value on index 0 of the array of allowed values supplied.
+  Allows default to be `undefined`.
+  
+  ```ts
+  const validate = createValidator({
+    language: either(["english", "spanish"]),
+  });
+  
+  validate({language: "spanish"}); // Returns {language: "spanish"}
+  validate({language: "italian"}); // Returns {language: "english"}
+  validate({language: false}); // Returns {language: "english"}
+  ```

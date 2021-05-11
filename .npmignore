@@ -1,0 +1,5 @@
+.github
+dist/**/*.test.*
+src
+jest.config.js
+tsconfig.json

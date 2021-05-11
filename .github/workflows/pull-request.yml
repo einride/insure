@@ -1,0 +1,17 @@
+name: Pre-Merge Requirements
+"on": pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install
+        run: yarn install
+
+      - name: Test
+        run: yarn run test
+
+      - name: Build
+        run: yarn run build

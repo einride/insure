@@ -36,7 +36,7 @@ const validate = createValidator<Struct>({
 });
 ```
 
-Nested example
+Nested example.
 
 ```ts
 import { createValidator, number, string } from "@einride/insure";
@@ -78,4 +78,47 @@ const validate = createValidator({
 });
 
 const data = validate({});
+```
+
+By validating an empty object you create the default values.
+
+```ts
+import { createValidator, number, string } from "@einride/insure";
+
+type TimeFormat = "HH:mm" | "hh:mm A";
+
+const validate = createValidator({
+  searchHistoryLength: number(100),
+  timeFormat: either<TimeFormat>(["HH:mm", "hh:mm A"]),
+});
+
+const DEFAULT_VALUES = validate({});
+```
+
+In most cases you will always pass your data thru the validator function and implicitly get defaults. 
+
+```ts
+import { createValidator, number, string } from "@einride/insure";
+
+type TimeFormat = "HH:mm" | "hh:mm A";
+
+const validate = createValidator({
+  searchHistoryLength: number(100),
+  timeFormat: either<TimeFormat>(["HH:mm", "hh:mm A"]),
+});
+
+function readPrefs() {
+    try {
+        const serializedData = window.localStorage.getItem("prefs"):
+        return JSON.parse(serializedData);
+    } catch (error) {
+        console.error("Pref parsing failed", error);
+        return null;
+    }
+}
+
+export function getDevicePreferences() {
+    const prefs = readPrefs();
+    return validate(prefs);
+}
 ```

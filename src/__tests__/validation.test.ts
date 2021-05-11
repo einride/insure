@@ -10,6 +10,40 @@ describe("Validation", () => {
       expect(validate).toBeInstanceOf(Function);
     });
 
+    it("works well with a well defined type structure", () => {
+      type Union = "a" | "b" | "c";
+
+      type Struct = {
+        optionalEither?: Union;
+        requiredEitherAll: Union;
+        requiredEitherSome: Union;
+        optionalString?: string;
+        requiredString: string;
+        optionalNumber?: number;
+        requiredNumber: number;
+      };
+
+      const validate = createValidator<Struct>({
+        optionalEither: either([undefined]),
+        requiredEitherAll: either(["a", "b", "c"]),
+        requiredEitherSome: either(["c"]),
+        optionalString: string(undefined),
+        requiredString: string("ABCD"),
+        optionalNumber: number(undefined),
+        requiredNumber: number(12345),
+      });
+
+      expect(validate({})).toEqual({
+        optionalEither: undefined,
+        optionalNumber: undefined,
+        optionalString: undefined,
+        requiredEitherAll: "a",
+        requiredEitherSome: "c",
+        requiredNumber: 12345,
+        requiredString: "ABCD",
+      });
+    });
+
     describe("validation function", () => {
       it("ignores values not in spec", () => {
         const validate = createValidator({

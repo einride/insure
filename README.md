@@ -67,7 +67,7 @@ const validate = createValidator({
 });
 ```
 
-Types will be inferred unspecifed. Some types, like unions, may not behave like you expect unless explicitly defined.
+Types will be inferred if unspecifed. Some types, like unions, may not behave like you expect unless explicitly defined.
 
 ```ts
 import { createValidator, number, string } from "@einride/insure";
@@ -159,7 +159,7 @@ export function getDevicePreferences() {
   
 * Either (one of)
   
-  The either validator will only values that exist in a Set thru.
+  The either validator will only let values that exist in a set thru.
   No type casting will be attempted.
   Default value will be the value on index 0 of the array of allowed values supplied.
   Allows default to be `undefined`.
@@ -198,18 +198,18 @@ function min16Len(value: unknown): string {
 Validators that require a state can be created using a higher-order function. This is useful when a default should be provided or its implementation characteristics should be configurable.
 
 ```ts
-function minLen(min: number) {
+function minLen(min: number, fallback: string) {
   function validate(value: unknown): string {
     if (typeof value === "string") {
       if (value.length > min) {
         return value;
       }
     }
-    return undefined;
+    return fallback;
   }
 }
 
 const validator = createValidator({
-  defaultId: minLen(16),
+  defaultId: minLen(16, "abcdefghijklmnopqrstuvwxyz"),
 });
 ```

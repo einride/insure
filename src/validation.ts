@@ -4,13 +4,13 @@ type ValidationSpec<Entries extends Record<string, unknown>> = {
   [Name in keyof Entries]: ValidationEntry<Entries[Name]>;
 };
 
-export function createValidator<Prefs extends Record<string, unknown>>(
-  spec: ValidationSpec<Prefs>
+export function createValidator<Shape extends Record<string, unknown>>(
+  spec: ValidationSpec<Shape>
 ) {
-  return function validate(maybePrefs: unknown): Prefs {
-    const source = (typeof maybePrefs === "object"
-      ? { ...maybePrefs }
-      : {}) as Partial<Prefs>;
+  return function validate(maybeValues: unknown): Shape {
+    const source = (typeof maybeValues === "object"
+      ? { ...maybeValues }
+      : {}) as Partial<Shape>;
 
     const output: Record<string, unknown> = {};
     for (const name of Object.keys(spec)) {
@@ -18,7 +18,7 @@ export function createValidator<Prefs extends Record<string, unknown>>(
       output[name] = validate(source[name]);
     }
 
-    return output as Prefs;
+    return output as Shape;
   };
 }
 

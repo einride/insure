@@ -96,37 +96,37 @@ describe("Validation", () => {
     });
 
     it("gracefully handles bad input", () => {
-      const validator = createValidator({
+      const validate = createValidator({
         a: number(1),
         b: string("A"),
       });
 
-      expect(validator(undefined)).toEqual({
+      expect(validate(undefined)).toEqual({
         a: 1,
         b: "A",
       });
 
-      expect(validator(null)).toEqual({
+      expect(validate(null)).toEqual({
         a: 1,
         b: "A",
       });
 
-      expect(validator([])).toEqual({
+      expect(validate([])).toEqual({
         a: 1,
         b: "A",
       });
 
-      expect(validator("")).toEqual({
+      expect(validate("")).toEqual({
         a: 1,
         b: "A",
       });
 
-      expect(validator(2124)).toEqual({
+      expect(validate(2124)).toEqual({
         a: 1,
         b: "A",
       });
 
-      expect(validator(NaN)).toEqual({
+      expect(validate(NaN)).toEqual({
         a: 1,
         b: "A",
       });

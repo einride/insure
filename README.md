@@ -4,15 +4,14 @@ Library for building insurance layers for unknown data. Applicable for when you 
 
 ```ts
 type Prefs = {
-  language: "english" | "spanish",
-  itemsPerPage: number,
-}
+  language: "english" | "spanish";
+  itemsPerPage: number;
+};
 
 const serializedData = window.localStorage.getItem("user-prefs");
 
-// May crash application despite being typed
+// May crash application despite behaving like it is typed.
 const unsafe = JSON.parse(serializedData) as Prefs;
-
 
 const validate = createValidator<Prefs>({
   language: either(["english", "spanish"]),
@@ -25,7 +24,6 @@ const safe = validate(JSON.parse(serializedData));
 
 This lib is not recommended for user input validation where the user may need feedback on poorly formed data.
 
-
 ## Usage
 
 A basic example of a typed insurance pattern.
@@ -35,7 +33,7 @@ import { createValidator, number, string } from "@einride/insure";
 
 type Union = "a" | "b" | "c";
 
-type Struct = {
+type Shape = {
   optionalEither?: Union;
   requiredEitherAll: Union;
   requiredEitherSome: Union;
@@ -45,7 +43,7 @@ type Struct = {
   requiredNumber: number;
 };
 
-const validate = createValidator<Struct>({
+const validate = createValidator<Shape>({
   optionalEither: either([undefined]),
   requiredEitherAll: either(["a", "b", "c"]),
   requiredEitherSome: either(["c"]),
@@ -115,7 +113,7 @@ const validate = createValidator({
 const DEFAULT_VALUES = validate({});
 ```
 
-In most cases you will always pass your data thru the validator function and implicitly get defaults. 
+In most cases you will always pass your data thru the validator function and implicitly get defaults.
 
 ```ts
 import { createValidator, number, string } from "@einride/insure";
@@ -145,55 +143,54 @@ export function getDevicePreferences() {
 
 ### Value types
 
-* Number
-  
-  The number validator will only let numbers pass thru. 
+- Number
+
+  The number validator will only let numbers pass thru.
   No type casting will be attempted.
   Allows default to be `undefined`.
-  
+
   ```ts
   const validate = createValidator({
     size: number(1),
   });
-  
-  validate({size: "foo"}); // Returns {size: 1}
-  validate({size: "5"}); // Returns {size: 1}
-  validate({size: 20}); // Returns {size: 20}
+
+  validate({ size: "foo" }); // Returns {size: 1}
+  validate({ size: "5" }); // Returns {size: 1}
+  validate({ size: 20 }); // Returns {size: 20}
   ```
 
-* String
-  
-  The string validator will only let strings pass thru. 
+- String
+
+  The string validator will only let strings pass thru.
   No type casting will be attempted.
   Allows default to be `undefined`.
-  
+
   ```ts
   const validate = createValidator({
     defaultId: string(undefined),
   });
-  
-  validate({defaultId: "v8aewbng39"}); // Returns {defaultId: "v8aewbng39"}
-  validate({defaultId: "5"}); // Returns {defaultId: "5"}
-  validate({defaultId: 1234}); // Returns {defaultId: undefined}
+
+  validate({ defaultId: "v8aewbng39" }); // Returns {defaultId: "v8aewbng39"}
+  validate({ defaultId: "5" }); // Returns {defaultId: "5"}
+  validate({ defaultId: 1234 }); // Returns {defaultId: undefined}
   ```
-  
-* Either (one of)
-  
+
+- Either (one of)
+
   The either validator will only let values that exist in a set thru.
   No type casting will be attempted.
   Default value will be the value on index 0 of the array of allowed values supplied.
   Allows default to be `undefined`.
-  
+
   ```ts
   const validate = createValidator({
     language: either(["english", "spanish"]),
   });
-  
-  validate({language: "spanish"}); // Returns {language: "spanish"}
-  validate({language: "italian"}); // Returns {language: "english"}
-  validate({language: false}); // Returns {language: "english"}
-  ```
 
+  validate({ language: "spanish" }); // Returns {language: "spanish"}
+  validate({ language: "italian" }); // Returns {language: "english"}
+  validate({ language: false }); // Returns {language: "english"}
+  ```
 
 ### Custom validators
 
@@ -204,6 +201,7 @@ type ValidationEntry<T> = (value: unknown) => T;
 ```
 
 Basic example.
+
 ```ts
 function min16Len(value: unknown): string {
   if (typeof value === "string") {

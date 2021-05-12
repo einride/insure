@@ -217,7 +217,7 @@ Validators that require a state can be created using a higher-order function. Th
 
 ```ts
 function minLen(min: number, fallback: string) {
-  function validate(value: unknown): string {
+  return function validate(value: unknown): string {
     if (typeof value === "string") {
       if (value.length > min) {
         return value;

@@ -95,7 +95,7 @@ describe("Validation", () => {
       });
     });
 
-    it("it gracefully handles bad input", () => {
+    it("gracefully handles bad input", () => {
       const validator = createValidator({
         a: number(1),
         b: string("A"),

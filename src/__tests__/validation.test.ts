@@ -10,7 +10,7 @@ describe("Validation", () => {
       expect(validate).toBeInstanceOf(Function);
     });
 
-    it("works well with a well defined type structure", () => {
+    it("works well with a defined type structure", () => {
       type Union = "a" | "b" | "c";
 
       type Struct = {

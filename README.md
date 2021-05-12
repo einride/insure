@@ -1,10 +1,30 @@
 # Insure
 
-Library for building insurance layers for unknown data.
+Library for building insurance layers for unknown data. Applicable for when you get data from Local Storage, user input, or any other source that is not guaranteed to be the expected format.
 
-Applicable for when you get data from Local Storage and user input.
+```ts
+type Prefs = {
+  language: "english" | "spanish",
+  itemsPerPage: number,
+}
 
-This lib is not useful for user input validation where the user may need feedback on ill-formed data.
+const serializedData = window.localStorage.getItem("user-prefs");
+
+// May crash application despite being typed
+const unsafe = JSON.parse(serializedData) as Prefs;
+
+
+const validate = createValidator<Prefs>({
+  language: either(["english", "spanish"]),
+  itemsPerPage: number(10),
+});
+
+// Will ensure that `safe` is compatible with `Prefs` type.
+const safe = validate(JSON.parse(serializedData));
+```
+
+This lib is not recommended for user input validation where the user may need feedback on poorly formed data.
+
 
 ## Usage
 

@@ -143,24 +143,36 @@ describe("Validation", () => {
     });
 
     describe("either validator", () => {
-      let validate: ReturnType<typeof createValidator>;
-
-      beforeEach(() => {
-        validate = createValidator({
+      it("allows a valid value", () => {
+        const validate = createValidator({
           foo: either([3, 2]),
         });
-      });
 
-      it("allows a valid value", () => {
         expect(validate({ foo: 2 })).toEqual({ foo: 2 });
       });
 
       it("uses default for invalid value", () => {
+        const validate = createValidator({
+          foo: either([3, 2]),
+        });
+
         expect(validate({ foo: 1 })).toEqual({ foo: 3 });
       });
 
-      it("uses default no value", () => {
+      it("uses default when there is no value", () => {
+        const validate = createValidator({
+          foo: either([3, 2]),
+        });
+
         expect(validate({})).toEqual({ foo: 3 });
+      });
+
+      it("allows undefined as default", () => {
+        const validate = createValidator({
+          foo: either([undefined, 3, 2]),
+        });
+
+        expect(validate({ foo: 10 })).toEqual({ foo: undefined });
       });
     });
 
@@ -193,7 +205,7 @@ describe("Validation", () => {
         expect(validate({ foo: 124124.222 })).toEqual({ foo: 124124.222 });
       });
 
-      it("returns default if not a string", () => {
+      it("returns default if not a number", () => {
         const validate = createValidator({
           foo: number(13382),
         });

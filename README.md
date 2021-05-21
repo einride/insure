@@ -1,6 +1,6 @@
 # Insure
 
-Library for building insurance layers for unknown data. Applicable for when you get data from Local Storage, user input, or any other source that is not guaranteed to be the expected format.
+Library for building validation functions to protect against runtime type errors. Applicable for when you unserialize data which has lost its TypeScript contract, for example user settings stored in LocalStorage. 
 
 ```ts
 type Prefs = {
